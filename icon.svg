@@ -1,0 +1,64 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="foxGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F7931E;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2C3E50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34495E;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGradient)" filter="url(#shadow)"/>
+
+  <!-- Fox head -->
+  <ellipse cx="256" cy="280" rx="120" ry="100" fill="url(#foxGradient)"/>
+
+  <!-- Fox ears -->
+  <ellipse cx="200" cy="200" rx="25" ry="40" fill="url(#foxGradient)" transform="rotate(-15 200 200)"/>
+  <ellipse cx="312" cy="200" rx="25" ry="40" fill="url(#foxGradient)" transform="rotate(15 312 200)"/>
+
+  <!-- Inner ear details -->
+  <ellipse cx="200" cy="200" rx="15" ry="25" fill="#E74C3C" transform="rotate(-15 200 200)"/>
+  <ellipse cx="312" cy="200" rx="15" ry="25" fill="#E74C3C" transform="rotate(15 312 200)"/>
+
+  <!-- Fox eyes -->
+  <circle cx="230" cy="260" r="12" fill="#2C3E50"/>
+  <circle cx="282" cy="260" r="12" fill="#2C3E50"/>
+  <circle cx="230" cy="260" r="6" fill="#FFFFFF"/>
+  <circle cx="282" cy="260" r="6" fill="#FFFFFF"/>
+
+  <!-- Fox nose -->
+  <ellipse cx="256" cy="290" rx="8" ry="6" fill="#2C3E50"/>
+
+  <!-- Email/envelope -->
+  <g transform="translate(320, 180) rotate(15)">
+    <!-- Envelope body -->
+    <rect x="0" y="0" width="80" height="60" rx="8" fill="#3498DB" stroke="#2980B9" stroke-width="2"/>
+
+    <!-- Envelope flap -->
+    <path d="M 0 8 L 40 28 L 80 8" stroke="#2980B9" stroke-width="2" fill="none"/>
+
+    <!-- Envelope lines -->
+    <line x1="15" y1="25" x2="65" y2="25" stroke="#FFFFFF" stroke-width="2" opacity="0.8"/>
+    <line x1="15" y1="35" x2="65" y2="35" stroke="#FFFFFF" stroke-width="2" opacity="0.8"/>
+    <line x1="15" y1="45" x2="45" y2="45" stroke="#FFFFFF" stroke-width="2" opacity="0.8"/>
+
+    <!-- Send arrow -->
+    <g transform="translate(70, 30)">
+      <circle cx="0" cy="0" r="12" fill="#27AE60"/>
+      <path d="M -6 0 L 6 0 M 3 -3 L 6 0 L 3 3" stroke="#FFFFFF" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- Decorative elements -->
+  <circle cx="120" cy="120" r="4" fill="#E74C3C" opacity="0.6"/>
+  <circle cx="400" cy="140" r="3" fill="#F39C12" opacity="0.6"/>
+  <circle cx="140" cy="380" r="5" fill="#9B59B6" opacity="0.6"/>
+  <circle cx="380" cy="360" r="4" fill="#1ABC9C" opacity="0.6"/>
+</svg>

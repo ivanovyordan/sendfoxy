@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sendfoxy</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <h1><i class="fas fa-envelope"></i> Sendfoxy</h1>
+          <div class="header-actions">
+            <button id="settingsBtn" class="btn btn-secondary">
+              <i class="fas fa-cog"></i> Settings
+            </button>
+            <button id="copyBtn" class="btn btn-primary">
+              <i class="fas fa-copy"></i> Copy HTML
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Left Pane - Markdown Input -->
+        <div class="left-pane">
+          <div class="pane-header">
+            <h2><i class="fas fa-edit"></i> Markdown</h2>
+          </div>
+          <div class="pane-content">
+            <textarea
+              id="markdownInput"
+              placeholder="Enter your markdown content here..."
+            >
+# Welcome to Sendfoxy
+
+This is a **bold** text and this is *italic*.
+
+## Features
+
+- Convert markdown to HTML emails
+- Inline CSS for Gmail compatibility
+- Custom templates
+- Easy copy to clipboard
+
+### Links
+
+Visit [our website](https://example.com) for more information.
+
+### Code Example
+
+```javascript
+console.log('Hello, Sendfoxy!');
+```
+
+---
+
+*Built with ❤️ for Sendfox users*</textarea
+            >
+          </div>
+        </div>
+
+        <!-- Right Pane - Preview/HTML -->
+        <div class="right-pane">
+          <div class="pane-header">
+            <h2><i class="fas fa-eye"></i> Preview</h2>
+            <div class="view-toggle">
+              <button id="previewBtn" class="toggle-btn active">
+                <i class="fas fa-eye"></i> Preview
+              </button>
+              <button id="htmlBtn" class="toggle-btn">
+                <i class="fas fa-code"></i> HTML
+              </button>
+            </div>
+          </div>
+          <div class="pane-content">
+            <div id="previewContent" class="preview-content"></div>
+            <pre
+              id="htmlContent"
+              class="html-content"
+              style="display: none"
+            ></pre>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>

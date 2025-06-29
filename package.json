@@ -1,0 +1,54 @@
+{
+    "name": "sendfoxy",
+    "version": "1.0.0",
+    "description": "A tool that turns markdown text into HTML emails for Sendfox",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "dev": "electron . --dev",
+        "build": "electron-builder",
+        "dist": "electron-builder --publish=never"
+    },
+    "keywords": [
+        "electron",
+        "markdown",
+        "email",
+        "sendfox"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^28.0.0",
+        "electron-builder": "^24.6.4"
+    },
+    "dependencies": {
+        "juice": "^8.1.0",
+        "marked": "^9.1.6",
+        "electron-store": "^8.1.0"
+    },
+    "build": {
+        "appId": "com.sendfoxy.app",
+        "productName": "Sendfoxy",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "main.js",
+            "renderer.js",
+            "settings.js",
+            "index.html",
+            "settings.html",
+            "styles/**/*",
+            "node_modules/**/*"
+        ],
+        "mac": {
+            "icon": "icon.png"
+        },
+        "win": {
+            "icon": "icon.png"
+        },
+        "linux": {
+            "icon": "icon.png"
+        }
+    }
+}
