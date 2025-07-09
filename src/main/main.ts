@@ -1,7 +1,6 @@
 import { app, BrowserWindow, ipcMain, clipboard, shell } from "electron";
 import { join } from "path";
 import Store from "electron-store";
-import { IpcHandlers, IpcEvents } from "../shared/types";
 
 // Initialize store for settings with proper configuration for packaged apps
 let store: Store;
@@ -88,7 +87,7 @@ ipcMain.handle("get-template", async (): Promise<string> => {
 
 ipcMain.handle(
   "save-template",
-  async (event, template: string): Promise<boolean> => {
+  async (_: unknown, template: string): Promise<boolean> => {
     try {
       store.set("template", template);
       console.log("Template saved successfully");
@@ -100,24 +99,30 @@ ipcMain.handle(
   }
 );
 
-ipcMain.handle("copy-to-clipboard", (event, html: string): Promise<boolean> => {
-  return new Promise((resolve) => {
-    try {
-      clipboard.writeText(html);
-      resolve(true);
-    } catch (error) {
-      console.error("Error copying to clipboard:", error);
-      resolve(false);
-    }
-  });
-});
+ipcMain.handle(
+  "copy-to-clipboard",
+  (_: unknown, html: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      try {
+        clipboard.writeText(html);
+        resolve(true);
+      } catch (error) {
+        console.error("Error copying to clipboard:", error);
+        resolve(false);
+      }
+    });
+  }
+);
 
-ipcMain.handle("open-external", async (event, url: string): Promise<void> => {
-  await shell.openExternal(url);
-});
+ipcMain.handle(
+  "open-external",
+  async (_: unknown, url: string): Promise<void> => {
+    await shell.openExternal(url);
+  }
+);
 
 // Handle template updates from settings window
-ipcMain.on("template-updated", (event, template: string) => {
+ipcMain.on("template-updated", (_: unknown, template: string) => {
   // Forward the template update to the main window
   if (mainWindow) {
     mainWindow.webContents.send("template-updated", template);

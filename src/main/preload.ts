@@ -1,5 +1,4 @@
 import { contextBridge, ipcRenderer } from "electron";
-import { IpcHandlers, IpcEvents } from "../shared/types";
 
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object
@@ -15,7 +14,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
   // IPC events
   onTemplateUpdated: (callback: (template: string) => void) => {
-    const handler = (event: any, template: string) => callback(template);
+    const handler = (_: any, template: string) => callback(template);
     ipcRenderer.on("template-updated", handler);
   },
 

@@ -19,7 +19,7 @@ turndownService.addRule("underline", {
 });
 
 turndownService.addRule("strikethrough", {
-  filter: ["s", "strike", "del"],
+  filter: ["s", "del"],
   replacement: function (content) {
     return `~~${content}~~`;
   },
