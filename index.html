@@ -92,6 +92,114 @@ console.log('Hello, Sendfoxy!');
       </main>
     </div>
 
+    <!-- Help Icon -->
+    <div id="helpIcon" class="help-icon">
+      <i class="fas fa-question"></i>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="help-modal">
+      <div class="help-modal-content">
+        <div class="help-modal-header">
+          <h2><i class="fas fa-keyboard"></i> Keyboard Shortcuts</h2>
+          <button id="closeHelpModal" class="close-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="help-modal-body">
+          <div class="shortcuts-section">
+            <h3>Text Formatting</h3>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + B</span>
+              <span class="shortcut-description">Bold</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + I</span>
+              <span class="shortcut-description">Italic</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + K</span>
+              <span class="shortcut-description">Link</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + `</span>
+              <span class="shortcut-description">Inline Code</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + S</span>
+              <span class="shortcut-description">Strikethrough</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + U</span>
+              <span class="shortcut-description">Underline</span>
+            </div>
+          </div>
+
+          <div class="shortcuts-section">
+            <h3>Headings</h3>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + 1-6</span>
+              <span class="shortcut-description">Heading 1-6</span>
+            </div>
+          </div>
+
+          <div class="shortcuts-section">
+            <h3>Lists & Structure</h3>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + L</span>
+              <span class="shortcut-description">Bullet List</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + O</span>
+              <span class="shortcut-description">Numbered List</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + Q</span>
+              <span class="shortcut-description">Blockquote</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + C</span>
+              <span class="shortcut-description">Code Block</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + H</span>
+              <span class="shortcut-description">Horizontal Rule</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + M</span>
+              <span class="shortcut-description">Image</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Cmd/Ctrl + T</span>
+              <span class="shortcut-description">Table</span>
+            </div>
+          </div>
+
+          <div class="shortcuts-section">
+            <h3>Navigation</h3>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Tab</span>
+              <span class="shortcut-description">Indent (4 spaces)</span>
+            </div>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Enter</span>
+              <span class="shortcut-description">Smart List Continuation</span>
+            </div>
+          </div>
+
+          <div class="shortcuts-section">
+            <h3>Special Features</h3>
+            <div class="shortcut-item">
+              <span class="shortcut-key">Paste URL + Selection</span>
+              <span class="shortcut-description"
+                >Create Link from Selected Text</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="renderer.js"></script>
   </body>
 </html>
