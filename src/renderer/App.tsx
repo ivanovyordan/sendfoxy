@@ -150,7 +150,7 @@ console.log('Hello, Sendfoxy!');
         onHelpClick={handleOpenHelp}
       />
 
-      <main className="container mx-auto px-4 py-10">
+      <main className="container mx-auto px-4 py-10 pt-24">
         <SplitPane
           markdown={appState.markdown}
           html={appState.html}
