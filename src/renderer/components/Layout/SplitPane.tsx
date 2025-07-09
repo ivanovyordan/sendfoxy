@@ -1,5 +1,5 @@
-import React from 'react';
-import MarkdownEditor from '../Editor/MarkdownEditor';
+import React, { useRef } from 'react';
+import MarkdownEditor, { MarkdownEditorHandle } from '../Editor/MarkdownEditor';
 import Preview from '../Editor/Preview';
 
 interface SplitPaneProps {
@@ -17,6 +17,8 @@ const SplitPane: React.FC<SplitPaneProps> = ({
   onMarkdownChange,
   onViewModeChange,
 }) => {
+  const editorRef = useRef<MarkdownEditorHandle>(null);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Left Pane - Markdown Input */}
@@ -29,6 +31,7 @@ const SplitPane: React.FC<SplitPaneProps> = ({
         </div>
         <div className="pane-content flex-1 overflow-hidden">
           <MarkdownEditor
+            ref={editorRef}
             value={markdown}
             onChange={onMarkdownChange}
           />
