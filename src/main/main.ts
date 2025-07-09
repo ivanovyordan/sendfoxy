@@ -20,7 +20,6 @@ try {
 }
 
 let mainWindow: BrowserWindow | null = null;
-let settingsWindow: BrowserWindow | null = null;
 
 function createMainWindow(): void {
   mainWindow = new BrowserWindow({
@@ -50,45 +49,6 @@ function createMainWindow(): void {
 
   mainWindow.on("closed", () => {
     mainWindow = null;
-  });
-}
-
-function createSettingsWindow(): void {
-  if (!mainWindow) return;
-
-  settingsWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      preload: join(__dirname, "preload.js"),
-    },
-    parent: mainWindow,
-    modal: true,
-    resizable: true,
-    minimizable: false,
-    maximizable: false,
-    title: "Settings - Sendfoxy",
-    show: false,
-  });
-
-  // Load settings page
-  if (app.isPackaged) {
-    settingsWindow.loadFile(join(__dirname, "../renderer/index.html"), {
-      hash: "settings",
-    });
-  } else {
-    settingsWindow.loadURL("http://localhost:3000/#settings");
-  }
-
-  // Show window when ready to prevent visual glitches
-  settingsWindow.once("ready-to-show", () => {
-    settingsWindow?.show();
-  });
-
-  settingsWindow.on("closed", () => {
-    settingsWindow = null;
   });
 }
 
@@ -152,14 +112,6 @@ ipcMain.handle("copy-to-clipboard", (event, html: string): Promise<boolean> => {
   });
 });
 
-ipcMain.handle("open-settings", (): void => {
-  if (!settingsWindow) {
-    createSettingsWindow();
-  } else {
-    settingsWindow.focus();
-  }
-});
-
 ipcMain.handle("open-external", async (event, url: string): Promise<void> => {
   await shell.openExternal(url);
 });
@@ -169,13 +121,6 @@ ipcMain.on("template-updated", (event, template: string) => {
   // Forward the template update to the main window
   if (mainWindow) {
     mainWindow.webContents.send("template-updated", template);
-  }
-});
-
-// Handle closing settings window
-ipcMain.on("close-settings-window", () => {
-  if (settingsWindow && !settingsWindow.isDestroyed()) {
-    settingsWindow.close();
   }
 });
 

@@ -54,13 +54,11 @@ console.log('Hello, Sendfoxy!');
 
     initApp();
 
-    // Listen for template updates
     window.electronAPI.onTemplateUpdated((template) => {
       setAppState(prev => ({ ...prev, template }));
       updatePreview(appState.markdown, template);
     });
 
-    // Check if we're in settings mode
     if (window.location.hash === '#settings') {
       setAppState(prev => ({ ...prev, isSettingsOpen: true }));
     }
@@ -85,7 +83,6 @@ console.log('Hello, Sendfoxy!');
 
   const handleCopyHtml = async () => {
     try {
-      // Extract email-wrapper content from the full HTML
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = appState.html;
 
@@ -105,7 +102,6 @@ console.log('Hello, Sendfoxy!');
 
       if (htmlToCopy && htmlToCopy.trim() !== '') {
         await window.electronAPI.copyToClipboard(htmlToCopy);
-        // Show success feedback (you can add a toast notification here)
       }
     } catch (error) {
       console.error('Error copying HTML:', error);

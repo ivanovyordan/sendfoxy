@@ -48,12 +48,30 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Text Formatting</h3>
               <div className="space-y-3">
-                <ShortcutItem key="bold" shortcut="Cmd/Ctrl + B" description="Bold" />
-                <ShortcutItem key="italic" shortcut="Cmd/Ctrl + I" description="Italic" />
-                <ShortcutItem key="link" shortcut="Cmd/Ctrl + K" description="Link" />
-                <ShortcutItem key="code" shortcut="Cmd/Ctrl + `" description="Inline Code" />
-                <ShortcutItem key="strikethrough" shortcut="Cmd/Ctrl + S" description="Strikethrough" />
-                <ShortcutItem key="underline" shortcut="Cmd/Ctrl + U" description="Underline" />
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + B</span>
+                  <span className="text-gray-600">Bold</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + I</span>
+                  <span className="text-gray-600">Italic</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + K</span>
+                  <span className="text-gray-600">Link</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + `</span>
+                  <span className="text-gray-600">Inline Code</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + S</span>
+                  <span className="text-gray-600">Strikethrough</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + U</span>
+                  <span className="text-gray-600">Underline</span>
+                </div>
               </div>
             </div>
 
@@ -61,7 +79,10 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Headings</h3>
               <div className="space-y-3">
-                <ShortcutItem key="heading" shortcut="Cmd/Ctrl + 1-6" description="Heading 1-6" />
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + 1-6</span>
+                  <span className="text-gray-600">Heading 1-6</span>
+                </div>
               </div>
             </div>
 
@@ -69,13 +90,34 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Lists & Structure</h3>
               <div className="space-y-3">
-                <ShortcutItem key="bullet" shortcut="Cmd/Ctrl + L" description="Bullet List" />
-                <ShortcutItem key="numbered" shortcut="Cmd/Ctrl + O" description="Numbered List" />
-                <ShortcutItem key="quote" shortcut="Cmd/Ctrl + Q" description="Blockquote" />
-                <ShortcutItem key="codeblock" shortcut="Cmd/Ctrl + C" description="Code Block" />
-                <ShortcutItem key="hr" shortcut="Cmd/Ctrl + H" description="Horizontal Rule" />
-                <ShortcutItem key="image" shortcut="Cmd/Ctrl + M" description="Image" />
-                <ShortcutItem key="table" shortcut="Cmd/Ctrl + T" description="Table" />
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + L</span>
+                  <span className="text-gray-600">Bullet List</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + O</span>
+                  <span className="text-gray-600">Numbered List</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + Q</span>
+                  <span className="text-gray-600">Blockquote</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + C</span>
+                  <span className="text-gray-600">Code Block</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + H</span>
+                  <span className="text-gray-600">Horizontal Rule</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + M</span>
+                  <span className="text-gray-600">Image</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Cmd/Ctrl + T</span>
+                  <span className="text-gray-600">Table</span>
+                </div>
               </div>
             </div>
 
@@ -83,8 +125,14 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Navigation</h3>
               <div className="space-y-3">
-                <ShortcutItem key="tab" shortcut="Tab" description="Indent (4 spaces)" />
-                <ShortcutItem key="enter" shortcut="Enter" description="Smart List Continuation" />
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Tab</span>
+                  <span className="text-gray-600">Indent (4 spaces)</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Enter</span>
+                  <span className="text-gray-600">Smart List Continuation</span>
+                </div>
               </div>
             </div>
           </div>
@@ -93,11 +141,10 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
           <div className="mt-8 pt-6 border-t border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Special Features</h3>
             <div className="space-y-3">
-              <ShortcutItem
-                key="paste-url"
-                shortcut="Paste URL + Selection"
-                description="Create Link from Selected Text"
-              />
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">Paste URL + Selection</span>
+                <span className="text-gray-600">Create Link from Selected Text</span>
+              </div>
             </div>
           </div>
         </div>
@@ -105,19 +152,5 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
     </div>
   );
 };
-
-interface ShortcutItemProps {
-  shortcut: string;
-  description: string;
-}
-
-const ShortcutItem: React.FC<ShortcutItemProps> = ({ shortcut, description }) => (
-  <div className="flex items-center justify-between">
-    <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded text-gray-700">
-      {shortcut}
-    </span>
-    <span className="text-gray-600">{description}</span>
-  </div>
-);
 
 export default HelpModal;

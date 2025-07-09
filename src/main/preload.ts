@@ -10,7 +10,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
     ipcRenderer.invoke("save-template", template),
   copyToClipboard: (html: string): Promise<boolean> =>
     ipcRenderer.invoke("copy-to-clipboard", html),
-  openSettings: (): Promise<void> => ipcRenderer.invoke("open-settings"),
   openExternal: (url: string): Promise<void> =>
     ipcRenderer.invoke("open-external", url),
 
@@ -18,14 +17,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
   onTemplateUpdated: (callback: (template: string) => void) => {
     const handler = (event: any, template: string) => callback(template);
     ipcRenderer.on("template-updated", handler);
-  },
-
-  removeTemplateUpdatedListener: () => {
-    ipcRenderer.removeAllListeners("template-updated");
-  },
-
-  closeSettingsWindow: (): void => {
-    ipcRenderer.send("close-settings-window");
   },
 
   templateUpdated: (template: string): void => {
@@ -38,11 +29,8 @@ export interface ElectronAPI {
   getTemplate: () => Promise<string>;
   saveTemplate: (template: string) => Promise<boolean>;
   copyToClipboard: (html: string) => Promise<boolean>;
-  openSettings: () => Promise<void>;
   openExternal: (url: string) => Promise<void>;
   onTemplateUpdated: (callback: (template: string) => void) => void;
-  removeTemplateUpdatedListener: () => void;
-  closeSettingsWindow: () => void;
   templateUpdated: (template: string) => void;
 }
 

@@ -41,7 +41,6 @@
         "vite": "^4.4.0"
     },
     "dependencies": {
-        "@types/electron-store": "^3.2.0",
         "electron-store": "^8.1.0",
         "juice": "^8.1.0",
         "marked": "^9.1.6",
