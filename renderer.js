@@ -1,6 +1,31 @@
 const { ipcRenderer, shell } = require("electron");
 const { marked } = require("marked");
 const juice = require("juice");
+const TurndownService = require("turndown");
+
+// Initialize Turndown service for HTML to Markdown conversion
+const turndownService = new TurndownService({
+  headingStyle: "atx",
+  codeBlockStyle: "fenced",
+  emDelimiter: "*",
+  bulletListMarker: "-",
+  hr: "---",
+});
+
+// Configure Turndown for better conversion
+turndownService.addRule("underline", {
+  filter: "u",
+  replacement: function (content) {
+    return `<u>${content}</u>`;
+  },
+});
+
+turndownService.addRule("strikethrough", {
+  filter: ["s", "strike", "del"],
+  replacement: function (content) {
+    return `~~${content}~~`;
+  },
+});
 
 // DOM elements
 const markdownInput = document.getElementById("markdownInput");
@@ -234,17 +259,33 @@ function handleEnterKey(event) {
   }
 }
 
-// Handle paste events for link functionality
+// Handle paste events for link functionality and rich text conversion
 function handlePaste(event) {
   const clipboardData = event.clipboardData || window.clipboardData;
   const pastedText = clipboardData.getData("text");
+  const pastedHtml = clipboardData.getData("text/html");
 
-  // Check if pasted text looks like a URL
+  // Check if pasted text looks like a URL and we have text selected
   if (isUrl(pastedText) && hasSelection()) {
     event.preventDefault();
     const selectedText = getSelectedText();
     const linkMarkdown = `[${selectedText}](${pastedText})`;
-    replaceSelection(linkMarkdown);
+    document.execCommand("insertText", false, linkMarkdown);
+    return;
+  }
+
+  // Check if we have rich text (HTML) content
+  if (pastedHtml && pastedHtml.trim() !== "") {
+    event.preventDefault();
+    try {
+      const markdown = turndownService.turndown(pastedHtml);
+      document.execCommand("insertText", false, markdown);
+    } catch (error) {
+      console.error("Error converting HTML to Markdown:", error);
+      // Fallback to plain text if conversion fails
+      document.execCommand("insertText", false, pastedText);
+    }
+    return;
   }
 }
 
