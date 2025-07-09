@@ -1,9 +1,9 @@
-const { app, BrowserWindow, ipcMain, clipboard, dialog } = require("electron");
-const path = require("path");
-const Store = require("electron-store");
+import { app, BrowserWindow, ipcMain, clipboard, shell } from "electron";
+import { join } from "path";
+import Store from "electron-store";
 
 // Initialize store for settings with proper configuration for packaged apps
-let store;
+let store: Store;
 try {
   store = new Store({
     name: "sendfoxy-settings",
@@ -18,55 +18,36 @@ try {
   store = new Store();
 }
 
-let mainWindow;
-let settingsWindow;
+let mainWindow: BrowserWindow | null = null;
 
-function createMainWindow() {
+function createMainWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: join(__dirname, "preload.js"),
     },
-    icon: path.join(__dirname, "icon.png"),
+    icon: join(__dirname, "../../icon.png"),
     title: "Sendfoxy",
+    show: false,
   });
 
-  mainWindow.loadFile("index.html");
+  // Load the app
+  if (app.isPackaged) {
+    mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
+  } else {
+    mainWindow.loadURL("http://localhost:3000");
+  }
+
+  // Show window when ready to prevent visual glitches
+  mainWindow.once("ready-to-show", () => {
+    mainWindow?.show();
+  });
 
   mainWindow.on("closed", () => {
     mainWindow = null;
-  });
-}
-
-function createSettingsWindow() {
-  settingsWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true,
-    },
-    parent: mainWindow,
-    modal: true,
-    resizable: true,
-    minimizable: false,
-    maximizable: false,
-    title: "Settings - Sendfoxy",
-    show: false, // Don't show until ready
-  });
-
-  settingsWindow.loadFile("settings.html");
-
-  // Show window when ready to prevent visual glitches
-  settingsWindow.once("ready-to-show", () => {
-    settingsWindow.show();
-  });
-
-  settingsWindow.on("closed", () => {
-    settingsWindow = null;
   });
 }
 
@@ -90,9 +71,9 @@ app.on("activate", () => {
 });
 
 // IPC Handlers
-ipcMain.handle("get-template", async () => {
+ipcMain.handle("get-template", async (): Promise<string> => {
   try {
-    const template = store.get("template", getDefaultTemplate());
+    const template = store.get("template", getDefaultTemplate()) as string;
     console.log(
       "Template retrieved successfully:",
       template ? "exists" : "using default"
@@ -104,46 +85,51 @@ ipcMain.handle("get-template", async () => {
   }
 });
 
-ipcMain.handle("save-template", async (event, template) => {
-  try {
-    store.set("template", template);
-    console.log("Template saved successfully");
-    return true;
-  } catch (error) {
-    console.error("Error saving template:", error);
-    return false;
+ipcMain.handle(
+  "save-template",
+  async (_: unknown, template: string): Promise<boolean> => {
+    try {
+      store.set("template", template);
+      console.log("Template saved successfully");
+      return true;
+    } catch (error) {
+      console.error("Error saving template:", error);
+      return false;
+    }
   }
-});
+);
 
-ipcMain.handle("copy-to-clipboard", (event, html) => {
-  clipboard.writeText(html);
-  return true;
-});
-
-ipcMain.handle("open-settings", () => {
-  if (!settingsWindow) {
-    createSettingsWindow();
-  } else {
-    settingsWindow.focus();
+ipcMain.handle(
+  "copy-to-clipboard",
+  (_: unknown, html: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      try {
+        clipboard.writeText(html);
+        resolve(true);
+      } catch (error) {
+        console.error("Error copying to clipboard:", error);
+        resolve(false);
+      }
+    });
   }
-});
+);
+
+ipcMain.handle(
+  "open-external",
+  async (_: unknown, url: string): Promise<void> => {
+    await shell.openExternal(url);
+  }
+);
 
 // Handle template updates from settings window
-ipcMain.on("template-updated", (event, template) => {
+ipcMain.on("template-updated", (_: unknown, template: string) => {
   // Forward the template update to the main window
   if (mainWindow) {
     mainWindow.webContents.send("template-updated", template);
   }
 });
 
-// Handle closing settings window
-ipcMain.on("close-settings-window", () => {
-  if (settingsWindow && !settingsWindow.isDestroyed()) {
-    settingsWindow.close();
-  }
-});
-
-function getDefaultTemplate() {
+function getDefaultTemplate(): string {
   return `<!DOCTYPE html>
 <html>
 <head>
