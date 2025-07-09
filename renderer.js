@@ -47,6 +47,36 @@ let currentTemplate = "";
 let currentHtml = "";
 let keyboardShortcuts;
 
+// Scroll sync between editor and preview
+function setupScrollSync() {
+  let isSyncingEditor = false;
+  let isSyncingPreview = false;
+
+  function getScrollRatio(element) {
+    return element.scrollTop / (element.scrollHeight - element.clientHeight);
+  }
+
+  function setScrollRatio(element, ratio) {
+    element.scrollTop = ratio * (element.scrollHeight - element.clientHeight);
+  }
+
+  markdownInput.addEventListener("scroll", () => {
+    if (isSyncingEditor) return;
+    if (previewContent.style.display === "none") return;
+    isSyncingPreview = true;
+    setScrollRatio(previewContent, getScrollRatio(markdownInput));
+    isSyncingPreview = false;
+  });
+
+  previewContent.addEventListener("scroll", () => {
+    if (isSyncingPreview) return;
+    if (previewContent.style.display === "none") return;
+    isSyncingEditor = true;
+    setScrollRatio(markdownInput, getScrollRatio(previewContent));
+    isSyncingEditor = false;
+  });
+}
+
 // Initialize
 async function init() {
   currentTemplate = await ipcRenderer.invoke("get-template");
@@ -56,6 +86,7 @@ async function init() {
   keyboardShortcuts = new KeyboardShortcuts(markdownInput);
 
   setupHelpModal();
+  setupScrollSync();
 }
 
 // Setup help modal functionality

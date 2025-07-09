@@ -37,6 +37,7 @@
             "main.js",
             "renderer.js",
             "settings.js",
+            "keyboard-shortcuts.js",
             "index.html",
             "settings.html",
             "styles/**/*",
