@@ -2,72 +2,43 @@
     "name": "sendfoxy",
     "version": "1.0.0",
     "description": "A tool that turns markdown text into HTML emails for Sendfox",
-    "main": "dist/main.js",
+    "type": "module",
     "scripts": {
-        "dev": "concurrently \"npm run dev:renderer\" \"npm run dev:electron\"",
-        "dev:renderer": "vite",
-        "dev:electron": "tsc -p electron && electron .",
-        "build": "npm run build:renderer && npm run build:electron",
-        "build:renderer": "vite build",
-        "build:electron": "tsc -p electron",
-        "start": "npm run build && electron .",
-        "dist": "npm run build && electron-builder",
-        "postinstall": "electron-builder install-app-deps"
+        "dev": "vite",
+        "build": "vite build",
+        "typecheck": "tsc -p tsconfig.json --noEmit"
     },
     "keywords": [
-        "electron",
         "markdown",
         "email",
         "sendfox",
         "react",
         "typescript"
     ],
-    "author": "Your Name",
+    "author": "Yordan Ivanov",
     "license": "MIT",
-    "devDependencies": {
-        "@tailwindcss/typography": "^0.5.10",
-        "@types/node": "^20.0.0",
-        "@types/react": "^18.2.0",
-        "@types/react-dom": "^18.2.0",
-        "@types/turndown": "^5.0.5",
-        "@vitejs/plugin-react": "^4.0.0",
-        "autoprefixer": "^10.4.16",
-        "concurrently": "^8.2.2",
-        "electron": "^28.0.0",
-        "electron-builder": "^24.6.4",
-        "postcss": "^8.4.31",
-        "tailwindcss": "^3.3.5",
-        "typescript": "^5.0.0",
-        "vite": "^4.4.0"
-    },
     "dependencies": {
-        "electron-store": "^8.1.0",
-        "juice": "^8.1.0",
-        "marked": "^9.1.6",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "turndown": "^7.2.0"
+        "@tiptap/extension-bubble-menu": "3.27.3",
+        "@tiptap/extension-link": "3.27.3",
+        "@tiptap/extension-placeholder": "3.27.3",
+        "@tiptap/extension-underline": "3.27.3",
+        "@tiptap/react": "3.27.3",
+        "@tiptap/starter-kit": "3.27.3",
+        "@tiptap/suggestion": "3.27.3",
+        "react": "19.2.7",
+        "react-dom": "19.2.7"
     },
-    "build": {
-        "appId": "com.sendfoxy.app",
-        "productName": "Sendfoxy",
-        "directories": {
-            "output": "dist"
-        },
-        "files": [
-            "dist/main.js",
-            "dist/preload.js",
-            "dist/renderer/**/*",
-            "node_modules/**/*"
-        ],
-        "mac": {
-            "icon": "icon.png"
-        },
-        "win": {
-            "icon": "icon.png"
-        },
-        "linux": {
-            "icon": "icon.png"
-        }
+    "devDependencies": {
+        "@tailwindcss/typography": "0.5.20",
+        "@tailwindcss/vite": "4.3.2",
+        "@types/node": "26.1.0",
+        "@types/react": "19.2.17",
+        "@types/react-dom": "19.2.3",
+        "@vitejs/plugin-react": "6.0.3",
+        "autoprefixer": "10.5.2",
+        "postcss": "8.5.16",
+        "tailwindcss": "4.3.2",
+        "typescript": "6.0.3",
+        "vite": "8.1.3"
     }
 }

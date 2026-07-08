@@ -1,179 +1,59 @@
-import React, { useEffect, useState } from 'react';
-import { marked } from 'marked';
-import juice from 'juice';
-import { AppState } from '@/shared/types';
+import React, { useCallback, useRef } from 'react';
 import Header from './components/Layout/Header';
-import SplitPane from './components/Layout/SplitPane';
-import HelpModal from './components/Layout/HelpModal';
-import SettingsModal from './components/Settings/SettingsModal';
+import RichEditor from './components/Editor/RichEditor';
+
+// Body-only template with inline styles for email client compatibility.
+// Paste this directly into Sendfox's HTML editor.
+const TEMPLATE = `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333333; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="background-color: #ffffff; border-radius: 8px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <p style="margin: 0 0 16px 0;">Hey {{contact.first_name | there }},</p>
+
+    [CONTENT]
+
+    <p style="margin: 16px 0 0 0;">Thank you,<br/>Yordan from Data Gibberish</p>
+
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center;">
+      <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;">
+        <a href="https://www.datagibberish.com" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; background: #f8f9fa; border-radius: 6px; color: #495057; text-decoration: none; font-size: 14px;">
+          <i class="fas fa-envelope"></i> Newsletter
+        </a>
+        <a href="https://www.ivanovyordan.com/coaching" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; background: #f8f9fa; border-radius: 6px; color: #495057; text-decoration: none; font-size: 14px;">
+          <i class="fas fa-graduation-cap"></i> Coaching
+        </a>
+        <a href="https://linkedin.com/in/ivanovyordan" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; background: #f8f9fa; border-radius: 6px; color: #495057; text-decoration: none; font-size: 14px;">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      </div>
+      <p style="color: #6c757d; font-size: 14px; font-style: italic; margin: 0 0 12px 0;">Sent with ❤️ by Yordan Ivanov</p>
+      <p style="margin: 0; font-size: 14px; color: #6c757d;">
+        <a href="{{unsubscribe_url}}" style="color: #6c757d; text-decoration: underline;">Unsubscribe</a>
+      </p>
+    </div>
+  </div>
+</div>`;
 
 const App: React.FC = () => {
-  const [appState, setAppState] = useState<AppState>({
-    markdown: `# Welcome to Sendfoxy
+  const htmlRef = useRef<string>('');
 
-This is a **bold** text and this is *italic*.
-
-## Features
-
-- Convert markdown to HTML emails
-- Inline CSS for Gmail compatibility
-- Custom templates
-- Easy copy to clipboard
-
-### Links
-
-Visit [our website](https://example.com) for more information.
-
-### Code Example
-
-\`\`\`javascript
-console.log('Hello, Sendfoxy!');
-\`\`\`
-
----
-
-*Built with ❤️ by [Yordan Ivanov](https://ivanovyordan.com)*`,
-    html: '',
-    template: '',
-    viewMode: 'preview',
-    isSettingsOpen: false,
-    isHelpOpen: false,
-  });
-
-  // Initialize app
-  useEffect(() => {
-    const initApp = async () => {
-      try {
-        const template = await window.electronAPI.getTemplate();
-        setAppState(prev => ({ ...prev, template }));
-        updatePreview(appState.markdown, template);
-      } catch (error) {
-        console.error('Error initializing app:', error);
-      }
-    };
-
-    initApp();
-
-    window.electronAPI.onTemplateUpdated((template) => {
-      setAppState(prev => ({ ...prev, template }));
-      updatePreview(appState.markdown, template);
-    });
-
-    if (window.location.hash === '#settings') {
-      setAppState(prev => ({ ...prev, isSettingsOpen: true }));
-    }
+  const handleHtmlChange = useCallback((html: string) => {
+    htmlRef.current = html;
   }, []);
 
-  const updatePreview = (markdown: string, template: string) => {
-    const htmlFromMarkdown = marked(markdown);
-    const fullHtml = template.replace('[CONTENT]', htmlFromMarkdown);
-    const inlinedHtml = juice(fullHtml);
-
-    setAppState(prev => ({ ...prev, html: inlinedHtml }));
-  };
-
-  const handleMarkdownChange = (markdown: string) => {
-    setAppState(prev => ({ ...prev, markdown }));
-    updatePreview(markdown, appState.template);
-  };
-
-  const handleViewModeChange = (viewMode: 'preview' | 'html') => {
-    setAppState(prev => ({ ...prev, viewMode }));
-  };
-
   const handleCopyHtml = async () => {
+    const output = TEMPLATE.replace('[CONTENT]', htmlRef.current);
     try {
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = appState.html;
-
-      const emailWrapper = tempDiv.querySelector('.email-wrapper');
-      let htmlToCopy = '';
-
-      if (emailWrapper) {
-        htmlToCopy = emailWrapper.outerHTML;
-      } else {
-        const bodyElement = tempDiv.querySelector('body');
-        if (bodyElement) {
-          htmlToCopy = bodyElement.outerHTML;
-        } else {
-          htmlToCopy = appState.html;
-        }
-      }
-
-      if (htmlToCopy && htmlToCopy.trim() !== '') {
-        await window.electronAPI.copyToClipboard(htmlToCopy);
-      }
+      await navigator.clipboard.writeText(output);
     } catch (error) {
       console.error('Error copying HTML:', error);
     }
   };
 
-  const handleOpenSettings = () => {
-    setAppState(prev => ({ ...prev, isSettingsOpen: true }));
-  };
-
-  const handleCloseSettings = () => {
-    setAppState(prev => ({ ...prev, isSettingsOpen: false }));
-    if (window.location.hash === '#settings') {
-      window.location.hash = '';
-    }
-  };
-
-  const handleOpenHelp = () => {
-    setAppState(prev => ({ ...prev, isHelpOpen: true }));
-  };
-
-  const handleCloseHelp = () => {
-    setAppState(prev => ({ ...prev, isHelpOpen: false }));
-  };
-
-  // If we're in settings mode, show settings modal
-  if (window.location.hash === '#settings') {
-    return (
-      <SettingsModal
-        isOpen={true}
-        onClose={handleCloseSettings}
-        template={appState.template}
-        onTemplateChange={(template) => {
-          setAppState(prev => ({ ...prev, template }));
-          updatePreview(appState.markdown, template);
-        }}
-      />
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header
-        onSettingsClick={handleOpenSettings}
-        onCopyClick={handleCopyHtml}
-        onHelpClick={handleOpenHelp}
-      />
-
-      <main className="container mx-auto px-4 py-10 pt-24">
-        <SplitPane
-          markdown={appState.markdown}
-          html={appState.html}
-          viewMode={appState.viewMode}
-          onMarkdownChange={handleMarkdownChange}
-          onViewModeChange={handleViewModeChange}
-        />
+      <Header onCopyClick={handleCopyHtml} />
+      <main className="pt-20 pb-10 px-4">
+        <RichEditor onHtmlChange={handleHtmlChange} />
       </main>
-
-      <SettingsModal
-        isOpen={appState.isSettingsOpen}
-        onClose={handleCloseSettings}
-        template={appState.template}
-        onTemplateChange={(template) => {
-          setAppState(prev => ({ ...prev, template }));
-          updatePreview(appState.markdown, template);
-        }}
-      />
-
-      <HelpModal
-        isOpen={appState.isHelpOpen}
-        onClose={handleCloseHelp}
-      />
     </div>
   );
 };
