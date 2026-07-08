@@ -32,6 +32,10 @@
     @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
   }
 
+  .btn-success {
+    @apply bg-green-600 text-white focus:ring-green-500 cursor-default;
+  }
+
   /* Email card — mirrors the email template visually */
   .email-card {
     @apply bg-white rounded-xl shadow-sm border border-gray-200 max-w-2xl mx-auto p-8;
