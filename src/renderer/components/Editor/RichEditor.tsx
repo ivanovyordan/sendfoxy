@@ -38,7 +38,13 @@ const COMMANDS: SlashCommand[] = [
   { title: 'Blockquote',   description: 'Quote block',        icon: 'fa-quote-left', command: ({ editor, range }) => editor.chain().focus().deleteRange(range).toggleBlockquote().run() },
   { title: 'Code block',   description: 'Code snippet',       icon: 'fa-file-code',  command: ({ editor, range }) => editor.chain().focus().deleteRange(range).toggleCodeBlock().run() },
   { title: 'Divider',      description: 'Horizontal line',    icon: 'fa-minus',      command: ({ editor, range }) => editor.chain().focus().deleteRange(range).setHorizontalRule().run() },
-  { title: 'Emoji',        description: "Search emoji by name", icon: 'fa-face-smile', command: ({ editor, range }) => editor.chain().focus().deleteRange(range).insertContent(':').run() },
+  { title: 'Emoji',             description: 'Search emoji by name',           icon: 'fa-face-smile',  command: ({ editor, range }) => editor.chain().focus().deleteRange(range).insertContent(':').run() },
+  { title: 'First name',        description: '{{contact.first_name | there }}', icon: 'fa-tag',         command: ({ editor, range }) => editor.chain().focus().deleteRange(range).insertContent('{{contact.first_name | there }}').run() },
+  { title: 'Last name',         description: '{{contact.last_name}}',           icon: 'fa-tag',         command: ({ editor, range }) => editor.chain().focus().deleteRange(range).insertContent('{{contact.last_name}}').run() },
+  { title: 'Email',             description: '{{contact.email}}',               icon: 'fa-tag',         command: ({ editor, range }) => editor.chain().focus().deleteRange(range).insertContent('{{contact.email}}').run() },
+  { title: 'Unsubscribe URL',   description: '{{unsubscribe_url}}',             icon: 'fa-tag',         command: ({ editor, range }) => editor.chain().focus().deleteRange(range).insertContent('{{unsubscribe_url}}').run() },
+  { title: 'Referrer URL',      description: '{{contact.referrer_url}}',        icon: 'fa-tag',         command: ({ editor, range }) => editor.chain().focus().deleteRange(range).insertContent('{{contact.referrer_url}}').run() },
+  { title: 'Confirmation URL',  description: '{{contact.confirmation_url}}',    icon: 'fa-tag',         command: ({ editor, range }) => editor.chain().focus().deleteRange(range).insertContent('{{contact.confirmation_url}}').run() },
 ];
 
 function makePopup<TRef extends { onKeyDown: (p: { event: KeyboardEvent }) => boolean }>(
@@ -122,7 +128,7 @@ const RichEditor: React.FC<RichEditorProps> = ({ onHtmlChange }) => {
       StarterKit,
       Underline,
       Link.configure({ openOnClick: false }),
-      Placeholder.configure({ placeholder: "Type '/' for commands, ':emoji:' for emoji…" }),
+      Placeholder.configure({ placeholder: "Type '/' for commands…" }),
       Highlight.configure({ multicolor: true }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       TextStyle,
@@ -153,13 +159,8 @@ const RichEditor: React.FC<RichEditorProps> = ({ onHtmlChange }) => {
         </BubbleMenu>
       )}
 
-      <div className="px-6 pt-5 pb-2">
-        <p className="email-static">Hey {'{{contact.first_name | there }}'},</p>
+      <div className="px-6 py-5">
         <EditorContent editor={editor} />
-        <p className="email-static">
-          Thank you,<br />
-          Yordan from Data Gibberish
-        </p>
       </div>
 
       <div className="email-footer">
