@@ -37,7 +37,8 @@ const App: React.FC = () => {
   }, []);
 
   const handleCopyHtml = async () => {
-    const output = TEMPLATE.replace('[CONTENT]', htmlRef.current);
+    const content = htmlRef.current.replace(/<p><\/p>/g, '<p>&nbsp;</p>');
+    const output = TEMPLATE.replace('[CONTENT]', content);
     try {
       await navigator.clipboard.writeText(output);
       setCopied(true);
